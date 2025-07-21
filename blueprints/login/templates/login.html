@@ -1,0 +1,38 @@
+<html>
+    <header>
+        <title>Login</title>
+    </header>
+    <body>
+        <div>
+            {% with messages = get_flashed_messages(with_categories=true) %} 
+                {% if messages %} 
+                    {% for category, message in messages %}
+                    <p class="message-{{category}}">{{ message }} </p>
+                    {% endfor %} 
+                {% endif %} 
+            {% endwith %}
+        </div>
+        {% if not session["username"] %}
+        <form action="/login" method="POST">
+            <fieldset>
+                <legend>Login</legend>
+            <div>
+                <label>Username</label>
+                <input type="text" name="username">
+            </div>
+            <br>
+            <div>
+                <label>Password</label>
+                <input type="password" name="password">
+            </div>
+            <br>
+            <div>
+                <input type="submit" name="submit" value="Submit"/>
+            </div>
+            </fieldset>
+        </form>
+        {% else %}
+            <a href="/logout">Log Out</a> | <a href="/userlist">User List</a> 
+        {% endif %}
+    </body>
+</html>

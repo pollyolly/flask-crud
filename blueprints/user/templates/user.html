@@ -1,0 +1,54 @@
+<html>
+    <header>
+        <title>{{ title }}</title>
+    </header>
+    <body>
+        <div>
+            {% with messages = get_flashed_messages(with_categories=true) %} 
+                {% if messages %} 
+                    {% for category, message in messages %}
+                    <p class="message-{{category}}">{{ message }}</p>
+                    {% endfor %} 
+                {% endif %} 
+            {% endwith %}
+        </div>
+        <form action="{{ action }}" method="POST">
+            <fieldset>
+                <legend>{{ title }}</legend>
+                <input type="hidden" name="user_id" value="{{ users["id"] }}">
+            <div>
+                <label>Username</label>
+                <input type="text" name="username" value="{{ users["username"] }}">
+            </div>
+            <br>
+            <div>
+                <label>Password</label>
+                <input type="password" name="password">
+            </div>
+            <br>
+            <div>
+                <label>Firstname</label>
+                <input type="text" name="firstname" value="{{ users["firstname"] }}">
+            </div>
+            <br>
+            <div>
+                <label>Lastname</label> 
+                <input type="text" name="lastname" value="{{ users["lastname"] }}">
+            </div>
+            <br>
+            <div>
+                <label>Status</label>
+                <select name="status">
+                    <option value="{{ users["status"] }}">{{ users["status"] }}</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+            </div>
+            <br>
+            <div>
+                <input type="submit" name="submit" value="Submit"/>
+            </div>
+            </fieldset>
+        </form>
+    </body>
+</html>
