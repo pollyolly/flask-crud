@@ -3,16 +3,21 @@
         <title>{{ title }}</title>
     </header>
     <body>
-        <p>User: {{ session.username }}</p>
+        <table>
+            <tr>
+                <td> <p>User: {{ session.username }}</p></td>
+                <td><a href="/add_user">Add User</a></td>
+                <td><a href="/logout">Logout</a></td> 
+            </tr>
+        </table>
         <h3>{{ title }}</h3>
-        
         <table>
             <thead>
-            <th>Username</th>
-            <th>Firstname</th>
-            <th>Lastname</th>
-            <th>Status</th>
-            <th>Action</th>
+                <th>Username</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Status</th>
+                <th>Action</th>
             </thead>
             <tbody>
                 {% for user in users %}

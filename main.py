@@ -16,14 +16,14 @@ app.secret_key = 'required to setup session'
 limiter = Limiter(
     get_remote_address,
     app=app,
-    default_limits=["300/hour"], #Limit to 300 request per hour
+    default_limits=["600/hour"], #Limit to 300 request per hour
     # application_limits = ["5/minute"] #Limit to 5 request per minute
 )
 
 def error_handler():
     return "Please do not flood the server."
 
-limiter.limit("10/minute", error_message=error_handler)(login_bp)
+limiter.limit("20/minute", error_message=error_handler)(login_bp)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5050)

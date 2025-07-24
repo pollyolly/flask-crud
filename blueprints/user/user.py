@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, redirect
+from flask import Blueprint, render_template, request, flash, redirect, session
 from db.db_conn import get_db_connection
 from werkzeug.security import generate_password_hash
 import mysql.connector
@@ -7,6 +7,8 @@ user_bp = Blueprint("user", __name__, template_folder="templates")
 
 @user_bp.route("/add_user", methods=["POST","GET"])
 def add_user():
+    if not session.get("username"):
+        return redirect("/login")
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
@@ -26,7 +28,6 @@ def add_user():
             cursor.execute("INSERT INTO user (`username`,`password`,`firstname`,`lastname`,`status`) \
             VALUES (%s,%s,%s,%s,%s);", (username,hashed_pw,firstname,lastname,status,))
             conn.commit()
-            conn.close()
             flash(f"Successfully inserted!")
         except mysql.connector.Error as err:
             flash(f"Error: {err}")
@@ -34,12 +35,14 @@ def add_user():
             conn.close()
 
     return render_template("user.html", 
-    title="Register User", 
+    title="Add User", 
     action="/add_user",
     users=[])
 
 @user_bp.route("/get_user/<int:user_id>", methods=["GET"])
 def get_user(user_id):
+    if not session.get("username"):
+        return redirect("/login")
     if request.method == "GET":
         try:
             conn = get_db_connection()
@@ -59,6 +62,8 @@ def get_user(user_id):
 
 @user_bp.route("/update_user", methods=["POST"])
 def update_user():
+    if not session.get("username"):
+        return redirect("/login")
     if request.method == "POST":
         user_id = request.form["user_id"]
         username = request.form["username"]
@@ -77,14 +82,20 @@ def update_user():
             lastname = %s, status = %s WHERE id = %s", (username, hashed_pw, firstname, lastname, 
             status, user_id,))
             conn.commit()
+            flash(f"Successfully updated!")
         except mysql.connector.Error as err:
             flash(f"Error: {err}")
         finally:
             conn.close()
-        return redirect("/add_user")
+        return render_template("user.html", 
+            title="Update User", 
+            action="/update_user",
+            users=[])
 
 @user_bp.route("/delete_user/<int:user_id>", methods=["GET"])
 def delete_user(user_id):
+    if not session.get("username"):
+        return redirect("/login")
     if request.method == "GET":
         try:
             conn = get_db_connection()

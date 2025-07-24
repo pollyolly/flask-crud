@@ -2,12 +2,12 @@ from flask import Flask, Blueprint, render_template, request, redirect, flash, s
 from db.db_conn import get_db_connection
 import mysql.connector
 
-
 userlist_bp = Blueprint("userlist", __name__, template_folder="templates")
-
 
 @userlist_bp.route("/userlist", methods=["GET"])
 def user_list():
+    if not session.get("username"):
+        return redirect("/login")
     if request.method == "GET":
         try:
             conn = get_db_connection()
@@ -20,5 +20,5 @@ def user_list():
             conn.close()
 
     return render_template("userlist.html",
-    title="User List",
-    users=users)
+        title="User List",
+        users=users)

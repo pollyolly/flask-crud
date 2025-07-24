@@ -7,8 +7,6 @@ login_bp = Blueprint("login", __name__, template_folder="templates")
 
 @login_bp.route("/login", methods=["GET","POST"])
 def login():
-    # if session.get("username"):
-    #     return redirect("/userlist")
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
@@ -28,12 +26,8 @@ def login():
         if user and check_password_hash(user["password"], password):
             session["username"] = username
             flash(f"Welcome {username} !", "success")
-            # return redirect("/login")
         else:
             flash(f"Invalid username or password!", "invalid")
-            # return redirect("/login")
-    # if request.method == "GET":
-        # return Response(session.get("username"))
     return render_template("login.html",
     title="Login")
 
