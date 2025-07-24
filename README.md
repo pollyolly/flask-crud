@@ -11,7 +11,18 @@ $python3 main.py
 ```
 $pip freeze > requirements.txt
 ```
+### URLs
+```
+http://localhost:3000/login
+http://localhost:3000/logout
 
+http://localhost:3000/add_user
+http://localhost:3000/update_user
+http://localhost:3000/get_user/1
+http://localhost:3000/delete_user/1
+
+http://localhost:3000/userlist
+```
 ### Documentation
 
 Flask Limiter Docu
